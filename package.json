@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server -p 8000 -c-1",
-    "build": "tsc -p . --outDir build"
+    "build": "tsc -p ."
   },
   "repository": {
     "type": "git",
