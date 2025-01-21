@@ -1,0 +1,26 @@
+{
+  "name": "matchword",
+  "version": "1.0.0",
+  "description": "This is a word game like Match3. To create a word or multiple words, move the fragment with the letter",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -p 8000 -c-1",
+    "build": "tsc -p . --outDir build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schibir/MatchWord.git"
+  },
+  "author": "schibir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/schibir/MatchWord/issues"
+  },
+  "homepage": "https://github.com/schibir/MatchWord#readme",
+  "dependencies": {
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
