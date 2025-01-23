@@ -48,15 +48,34 @@ function main(_ : Event)
 
   if (mobile) {
   } else {
-    canvas.addEventListener("mouseup", (_) => {
+    let mouseX = 0;
+    let mouseY = 0;
+
+    const mouseup = (_ : MouseEvent) => {
+      if (isRendering) {
+        game.dropTile();
+      }
       isRendering = false;
-    }, false);
-    canvas.addEventListener("mouseleave", (_) => {
-      isRendering = false;
-    }, false);
-    canvas.addEventListener("mousedown", (_) => {
+    };
+
+    canvas.addEventListener("mouseup", mouseup, false);
+    canvas.addEventListener("mouseleave", mouseup, false);
+    canvas.addEventListener("mousedown", (ev : MouseEvent) => {
       isRendering = true;
+      mouseX = ev.offsetX;
+      mouseY = ev.offsetY;
+      game.takeTile(mouseX, mouseY);
       requestAnimationFrame(update);
+    }, false);
+    canvas.addEventListener("mousemove", (ev : MouseEvent) => {
+      if (!isRendering) {
+        return;
+      }
+      const dx = ev.offsetX - mouseX;
+      const dy = ev.offsetY - mouseY;
+      game.moveTile(dx, dy);
+      mouseX = ev.offsetX;
+      mouseY = ev.offsetY;
     }, false);
   }
 }

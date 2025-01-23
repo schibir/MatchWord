@@ -19,19 +19,19 @@ export class TileImage
 
 export class Tile
 {
-  #x : number;
-  #y : number;
+  x : number;
+  y : number;
   #image : TileImage;
 
   constructor(x : number, y : number, image : TileImage)
   {
-    this.#x = x;
-    this.#y = y;
+    this.x = x;
+    this.y = y;
     this.#image = image;
   }
 
   render(destCtx : CanvasRenderingContext2D)
   {
-    destCtx.drawImage(this.#image.canvas, this.#x, this.#y);
+    destCtx.drawImage(this.#image.canvas, this.x, this.y);
   }
 };
