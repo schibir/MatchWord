@@ -1,3 +1,4 @@
+import { Game } from "./game";
 
 function getRequestAnimationFrame()
 {
@@ -30,18 +31,20 @@ function main(_ : Event)
 {
   const requestAnimationFrame = getRequestAnimationFrame();
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-  // const context = canvas.getContext("2d");
   const mobile = isMobile();
+  const game = new Game(canvas);
 
   let isRendering = false;
 
   const update = () => {
+    game.render();
+
     if (!isRendering) {
       return;
     }
-
     requestAnimationFrame(update);
   };
+  update();
 
   if (mobile) {
   } else {

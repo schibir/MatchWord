@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "http-server -p 8000 -c-1",
-    "build": "tsc -p ."
+    "compile": "tsc -p .",
+    "browserify": "browserify build/main.js -p esmify -o dist/index.js",
+    "build": "npm run compile && npm run browserify"
   },
   "repository": {
     "type": "git",
@@ -17,10 +19,10 @@
     "url": "https://github.com/schibir/MatchWord/issues"
   },
   "homepage": "https://github.com/schibir/MatchWord#readme",
-  "dependencies": {
-    "typescript": "^5.7.3"
-  },
   "devDependencies": {
-    "http-server": "^14.1.1"
+    "browserify": "^17.0.1",
+    "esmify": "^2.1.1",
+    "http-server": "^14.1.1",
+    "typescript": "^5.7.3"
   }
 }
