@@ -10,10 +10,11 @@ export class Game
   {
     this.#context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-    const tileWidth = canvas.width / 5;
-    const tileHeight = canvas.height / 5;
+    const boardSize = 5;
+    const tileWidth = (canvas.width - boardSize) / 5;
+    const tileHeight = (canvas.height - boardSize) / 5;
 
-    this.#tileImage = new TileImage(tileWidth, tileHeight);
+    this.#tileImage = new TileImage(tileWidth, tileHeight, boardSize);
 
     for (let x = 0; x < 5; x++) {
       for (let y = 0; y < 5; y++) {
