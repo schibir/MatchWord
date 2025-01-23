@@ -3,7 +3,7 @@ import { TileImage, Tile } from "./tile";
 export class Game
 {
   #context : CanvasRenderingContext2D;
-  #tileImage : TileImage;
+  #tileImages : TileImage[] = [];
   #tiles : Tile[] = [];
   #tileWidth : number;
   #tileHeight : number;
@@ -13,21 +13,22 @@ export class Game
   {
     this.#context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-    const boardSize = 5;
-    this.#tileWidth = (canvas.width - boardSize) / 5;
-    this.#tileHeight = (canvas.height - boardSize) / 5;
-
-    this.#tileImage = new TileImage(this.#tileWidth, this.#tileHeight, boardSize);
+    const borderSize = 5;
+    this.#tileWidth = (canvas.width - borderSize) / 5;
+    this.#tileHeight = (canvas.height - borderSize) / 5;
 
     for (let x = 0; x < 5; x++) {
       for (let y = 0; y < 5; y++) {
-        this.#tiles.push(new Tile(x * this.#tileWidth, y * this.#tileHeight, this.#tileImage));
+        const image = new TileImage(this.#tileWidth, this.#tileHeight, borderSize, `${x + y * 5}`);
+        this.#tileImages.push(image);
+        this.#tiles.push(new Tile(x * this.#tileWidth, y * this.#tileHeight, image));
       }
     }
   }
 
   render()
   {
+    this.#context.fillRect(0, 0, this.#context.canvas.width, this.#context.canvas.height);
     for (let tile of this.#tiles) {
       tile.render(this.#context);
     }
