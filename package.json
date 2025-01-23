@@ -6,8 +6,11 @@
   "scripts": {
     "start": "http-server -p 8000 -c-1",
     "compile": "tsc -p .",
-    "browserify": "browserify build/main.js -p esmify -o dist/index.js",
-    "build": "npm run compile && npm run browserify"
+    "browserify-dev": "browserify build/main.js -p esmify -o dist/app.min.js",
+    "browserify": "browserify build/main.js -p esmify -o build/app.js",
+    "min": "uglifyjs -o dist/app.min.js build/app.js",
+    "build": "npm run compile && npm run browserify-dev",
+    "release": "npm run compile && npm run browserify && npm run min"
   },
   "repository": {
     "type": "git",
@@ -23,6 +26,7 @@
     "browserify": "^17.0.1",
     "esmify": "^2.1.1",
     "http-server": "^14.1.1",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "uglify-js": "^3.19.3"
   }
 }
