@@ -18,6 +18,3 @@ jobs:
         run: |
           npm ci
           npm run release
-
-      - name: Deploy 🚀
-        uses: actions/deploy-pages@v2
