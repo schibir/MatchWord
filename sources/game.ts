@@ -42,6 +42,7 @@ export class Game
   {
     let isCompleted = true;
     this.#context.fillRect(0, 0, this.#context.canvas.width, this.#context.canvas.height);
+    this.#currentTile?.fixRenderPpos();
     for (let tile of this.#tiles) {
       const completed = tile.update();
       isCompleted = isCompleted && completed;

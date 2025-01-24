@@ -37,6 +37,12 @@ export class Tile
     this.#image = image;
   }
 
+  fixRenderPpos()
+  {
+    this.#renderX = this.x;
+    this.#renderY = this.y;
+  }
+
   update()
   {
     this.#renderX += (this.x - this.#renderX) * 0.2;
@@ -44,7 +50,7 @@ export class Tile
 
     const dx = this.#renderX - this.x;
     const dy = this.#renderY - this.y;
-    if (dx * dx + dy * dy < 10 * 10) {
+    if (dx * dx + dy * dy < 5 * 5) {
       this.#renderX = this.x;
       this.#renderY = this.y;
       return true;
