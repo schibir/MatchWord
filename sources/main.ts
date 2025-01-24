@@ -45,37 +45,54 @@ function main(_ : Event)
     requestAnimationFrame(update);
   };
   update();
+  
+  let mouseX = 0;
+  let mouseY = 0;
+
+  const mouseup = <EventType>(_ : EventType) => {
+    if (isRendering) {
+      game.dropTile();
+    }
+    isRendering = false;
+  };
+  const mousedown = (x : number, y : number) => {
+    isRendering = true;
+    mouseX = x;
+    mouseY = y;
+    game.takeTile(mouseX, mouseY);
+    requestAnimationFrame(update);
+  };
+  const mousemove = (x : number, y : number) => {
+    if (!isRendering) {
+      return;
+    }
+    const dx = x - mouseX;
+    const dy = y - mouseY;
+    game.moveTile(dx, dy);
+    mouseX = x;
+    mouseY = y;
+  };
 
   if (mobile) {
+    document.addEventListener("touchend", mouseup, false);
+    document.addEventListener("touchcancel", mouseup, false);
+    document.addEventListener("touchstart", (ev : TouchEvent) => {
+      const { pageX, pageY } = ev.changedTouches[0];
+      mousedown(pageX - canvas.offsetLeft, pageY - canvas.offsetTop);
+    }, false);
+    document.addEventListener("touchmove", (ev : TouchEvent) => {
+      const { pageX, pageY } = ev.changedTouches[0];
+      mousemove(pageX - canvas.offsetLeft, pageY - canvas.offsetTop);
+    }, false);
   } else {
-    let mouseX = 0;
-    let mouseY = 0;
-
-    const mouseup = (_ : MouseEvent) => {
-      if (isRendering) {
-        game.dropTile();
-      }
-      isRendering = false;
-    };
 
     canvas.addEventListener("mouseup", mouseup, false);
     canvas.addEventListener("mouseleave", mouseup, false);
     canvas.addEventListener("mousedown", (ev : MouseEvent) => {
-      isRendering = true;
-      mouseX = ev.offsetX;
-      mouseY = ev.offsetY;
-      game.takeTile(mouseX, mouseY);
-      requestAnimationFrame(update);
+      mousedown(ev.offsetX, ev.offsetY);
     }, false);
     canvas.addEventListener("mousemove", (ev : MouseEvent) => {
-      if (!isRendering) {
-        return;
-      }
-      const dx = ev.offsetX - mouseX;
-      const dy = ev.offsetY - mouseY;
-      game.moveTile(dx, dy);
-      mouseX = ev.offsetX;
-      mouseY = ev.offsetY;
+      mousemove(ev.offsetX, ev.offsetY);
     }, false);
   }
 }
