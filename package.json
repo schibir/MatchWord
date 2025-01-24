@@ -8,7 +8,7 @@
     "compile": "tsc -p .",
     "browserify-dev": "browserify build/main.js -p esmify -o dist/app.min.js",
     "browserify": "browserify build/main.js -p esmify -o build/app.js",
-    "min": "uglifyjs -o dist/app.min.js build/app.js",
+    "min": "mkdir dist && uglifyjs -o dist/app.min.js build/app.js",
     "build": "npm run compile && npm run browserify-dev",
     "release": "npm run compile && npm run browserify && npm run min"
   },
