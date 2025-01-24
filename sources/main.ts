@@ -31,6 +31,13 @@ function main(_ : Event)
 {
   const requestAnimationFrame = getRequestAnimationFrame();
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+
+  const width = Math.min(canvas.width, document.documentElement.clientWidth);
+  const height = Math.min(canvas.height, document.documentElement.clientHeight);
+  const size = Math.min(width, height);
+  canvas.width = size;
+  canvas.height = size;
+
   const mobile = isMobile();
   const game = new Game(canvas);
 
@@ -45,11 +52,12 @@ function main(_ : Event)
     requestAnimationFrame(update);
   };
   update();
-  
+
   let mouseX = 0;
   let mouseY = 0;
 
-  const mouseup = <EventType>(_ : EventType) => {
+  const mouseup = (ev : MouseEvent | TouchEvent) => {
+    ev.preventDefault();
     if (isRendering) {
       game.dropTile();
     }
@@ -77,10 +85,12 @@ function main(_ : Event)
     document.addEventListener("touchend", mouseup, false);
     document.addEventListener("touchcancel", mouseup, false);
     document.addEventListener("touchstart", (ev : TouchEvent) => {
+      ev.preventDefault();
       const { pageX, pageY } = ev.changedTouches[0];
       mousedown(pageX - canvas.offsetLeft, pageY - canvas.offsetTop);
     }, false);
     document.addEventListener("touchmove", (ev : TouchEvent) => {
+      ev.preventDefault();
       const { pageX, pageY } = ev.changedTouches[0];
       mousemove(pageX - canvas.offsetLeft, pageY - canvas.offsetTop);
     }, false);
@@ -89,9 +99,11 @@ function main(_ : Event)
     canvas.addEventListener("mouseup", mouseup, false);
     canvas.addEventListener("mouseleave", mouseup, false);
     canvas.addEventListener("mousedown", (ev : MouseEvent) => {
+      ev.preventDefault();
       mousedown(ev.offsetX, ev.offsetY);
     }, false);
     canvas.addEventListener("mousemove", (ev : MouseEvent) => {
+      ev.preventDefault();
       mousemove(ev.offsetX, ev.offsetY);
     }, false);
   }

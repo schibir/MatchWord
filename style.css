@@ -9,6 +9,7 @@ html, body {
 
 .container {
   text-align: center;
+  touch-action: none;
 }
 
 .game-container {
