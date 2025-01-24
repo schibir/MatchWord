@@ -71,11 +71,14 @@ export class Game
 
   #checkTile(myTile : Tile)
   {
-    if (myTile.x < 0 || myTile.x >= this.#context.canvas.width ||
-        myTile.y < 0 || myTile.y >= this.#context.canvas.height) {
+    if (myTile.x < 0 || myTile.x >= 5 * this.#tileWidth ||
+        myTile.y < 0 || myTile.y >= 5 * this.#tileHeight) {
           return false;
         }
     for (let tile of this.#tiles) {
+      if (tile === myTile) {
+        continue;
+      }
       if (myTile.x === tile.x && myTile.y === tile.y) {
         return false;
       }
@@ -105,8 +108,8 @@ export class Game
 
     const centerX = getCenter(this.#currentTile.x, this.#tileWidth);
     const centerY = getCenter(this.#currentTile.y, this.#tileHeight);
-    if (centerX <= 0 || centerX >= this.#context.canvas.width ||
-        centerY <= 0 || centerY >= this.#context.canvas.height) {
+    if (centerX <= 0 || centerX >= 5 * this.#tileWidth ||
+        centerY <= 0 || centerY >= 5 * this.#tileHeight) {
           this.moveTile(-dx, -dy);
           return;
         }
