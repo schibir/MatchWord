@@ -18,6 +18,7 @@ export class Game
   #tileWidth : number;
   #tileHeight : number;
   #currentTile : Tile | null = null;
+  #lastCurrentTile : Tile | null = null;
   #currentTilePos = [0, 0];
 
   constructor(canvas : HTMLCanvasElement)
@@ -40,21 +41,16 @@ export class Game
   render()
   {
     let isCompleted = true;
-    let incompleted : Array<Tile> = [];
     this.#context.fillRect(0, 0, this.#context.canvas.width, this.#context.canvas.height);
     for (let tile of this.#tiles) {
       const completed = tile.update();
       isCompleted = isCompleted && completed;
-      if (completed) {
-        tile.render(this.#context);
-      } else {
-        incompleted.push(tile);
-      }
-    }
-    for (let tile of incompleted) {
       tile.render(this.#context);
     }
     this.#currentTile?.render(this.#context);
+    if (!this.#currentTile && this.#lastCurrentTile) {
+      this.#lastCurrentTile.render(this.#context);
+    }
     return isCompleted;
   }
 
@@ -76,6 +72,7 @@ export class Game
   {
     console.assert(this.#currentTile === null);
     this.#currentTile = this.#getTile(x, y, null);
+    this.#lastCurrentTile = this.#currentTile;
     console.assert(this.#currentTile !== null, `Unable to find tile in ${x}, ${y}`);
     this.#currentTilePos = this.#currentTile ? [this.#currentTile.x, this.#currentTile.y] : [0, 0];
   }
