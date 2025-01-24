@@ -1,6 +1,5 @@
 import { TileImage, Tile } from "./tile";
 
-
 function correctCoord(coord : number, tileSize : number)
 {
   const pos = coord / tileSize | 0;
@@ -40,11 +39,23 @@ export class Game
 
   render()
   {
+    let isCompleted = true;
+    let incompleted : Array<Tile> = [];
     this.#context.fillRect(0, 0, this.#context.canvas.width, this.#context.canvas.height);
     for (let tile of this.#tiles) {
+      const completed = tile.update();
+      isCompleted = isCompleted && completed;
+      if (completed) {
+        tile.render(this.#context);
+      } else {
+        incompleted.push(tile);
+      }
+    }
+    for (let tile of incompleted) {
       tile.render(this.#context);
     }
     this.#currentTile?.render(this.#context);
+    return isCompleted;
   }
 
   #getTile(x : number, y : number, ignoreTile : Tile | null)

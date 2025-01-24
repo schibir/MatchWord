@@ -24,17 +24,37 @@ export class Tile
 {
   x : number;
   y : number;
+  #renderX : number;
+  #renderY : number;
   #image : TileImage;
 
   constructor(x : number, y : number, image : TileImage)
   {
     this.x = x;
     this.y = y;
+    this.#renderX = x;
+    this.#renderY = y;
     this.#image = image;
+  }
+
+  update()
+  {
+    this.#renderX += (this.x - this.#renderX) * 0.2;
+    this.#renderY += (this.y - this.#renderY) * 0.2;
+
+    const dx = this.#renderX - this.x;
+    const dy = this.#renderY - this.y;
+    if (dx * dx + dy * dy < 10 * 10) {
+      this.#renderX = this.x;
+      this.#renderY = this.y;
+      return true;
+    }
+
+    return false;
   }
 
   render(destCtx : CanvasRenderingContext2D)
   {
-    destCtx.drawImage(this.#image.canvas, this.x, this.y);
+    destCtx.drawImage(this.#image.canvas, this.#renderX, this.#renderY);
   }
 };

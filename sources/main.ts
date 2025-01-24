@@ -44,9 +44,9 @@ function main(_ : Event)
   let isRendering = false;
 
   const update = () => {
-    game.render();
+    const completed = game.render();
 
-    if (!isRendering) {
+    if (!isRendering && completed) {
       return;
     }
     requestAnimationFrame(update);
@@ -56,7 +56,7 @@ function main(_ : Event)
   let mouseX = 0;
   let mouseY = 0;
 
-  const mouseup = (ev : MouseEvent | TouchEvent) => {
+  const mouseup = (ev : Event) => {
     ev.preventDefault();
     if (isRendering) {
       game.dropTile();
