@@ -1,3 +1,4 @@
+import { Dict } from "./dict";
 import { TileImage, Tile } from "./tile";
 
 function correctCoord(coord : number, tileSize : number)
@@ -20,6 +21,7 @@ export class Game
   #currentTile : Tile | null = null;
   #lastCurrentTile : Tile | null = null;
   #currentTilePos = [0, 0];
+  #dict : Dict;
 
   constructor(canvas : HTMLCanvasElement)
   {
@@ -36,6 +38,9 @@ export class Game
         this.#tiles.push(new Tile(x * this.#tileWidth, y * this.#tileHeight, image));
       }
     }
+
+    this.#dict = new Dict();
+    this.#dict;
   }
 
   render()

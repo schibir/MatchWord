@@ -95,7 +95,6 @@ function main(_ : Event)
       mousemove(pageX - canvas.offsetLeft, pageY - canvas.offsetTop);
     }, false);
   } else {
-
     canvas.addEventListener("mouseup", mouseup, false);
     canvas.addEventListener("mouseleave", mouseup, false);
     canvas.addEventListener("mousedown", (ev : MouseEvent) => {
