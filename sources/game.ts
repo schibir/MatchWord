@@ -1,4 +1,4 @@
-import { Dict } from "./dict";
+import { Board, char, BoardSize } from "./board";
 import { TileImage, Tile } from "./tile";
 
 function correctCoord(coord : number, tileSize : number)
@@ -14,14 +14,14 @@ function getCenter(coord : number, tileSize : number)
 export class Game
 {
   #context : CanvasRenderingContext2D;
-  #tileImages : TileImage[] = [];
+  #tileImages : Map<char, TileImage> = new Map<char, TileImage>();
   #tiles : Tile[] = [];
   #tileWidth : number;
   #tileHeight : number;
   #currentTile : Tile | null = null;
   #lastCurrentTile : Tile | null = null;
   #currentTilePos = [0, 0];
-  #dict : Dict;
+  #board : Board;
 
   constructor(canvas : HTMLCanvasElement)
   {
@@ -31,21 +31,26 @@ export class Game
     this.#tileWidth = (canvas.width - borderSize) / 5 | 0;
     this.#tileHeight = (canvas.height - borderSize) / 5 | 0;
 
-    for (let x = 0; x < 5; x++) {
-      for (let y = 0; y < 5; y++) {
-        const image = new TileImage(this.#tileWidth, this.#tileHeight, borderSize, `${x + y * 5}`);
-        this.#tileImages.push(image);
-        this.#tiles.push(new Tile(x * this.#tileWidth, y * this.#tileHeight, image));
+    this.#board = new Board(() => {
+      const alphabet = this.#board.getAlphabet();
+      for (let ch of alphabet) {
+        const image = new TileImage(this.#tileWidth, this.#tileHeight, borderSize, ch);
+        this.#tileImages.set(ch, image);
       }
-    }
 
-    this.#dict = new Dict();
-    this.#dict;
+      for (let x = 0; x < BoardSize; x++) {
+        for (let y = 0; y < BoardSize; y++) {
+          const img = this.#tileImages.get(this.#board.get(x, y));
+          console.assert(img !== undefined);
+          this.#tiles.push(new Tile(x * this.#tileWidth, y * this.#tileHeight, img as TileImage));
+        }
+      }
+    });
   }
 
   render()
   {
-    let isCompleted = true;
+    let isCompleted = this.#tiles.length > 0;
     this.#context.fillRect(0, 0, this.#context.canvas.width, this.#context.canvas.height);
     this.#currentTile?.fixRenderPpos();
     for (let tile of this.#tiles) {
